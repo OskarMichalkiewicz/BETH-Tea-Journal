@@ -1,4 +1,6 @@
+import { relations } from "drizzle-orm";
 import { blob, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { journals } from ".";
 
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
@@ -7,6 +9,13 @@ export const user = sqliteTable("user", {
   picture: text("picture").notNull(),
   journal_id: text("journal_id"),
 });
+
+export const userRelations = relations(user, ({ one }) => ({
+  journal: one(journals, {
+    fields: [user.journal_id],
+    references: [journals.id],
+  }),
+}));
 
 export const session = sqliteTable("user_session", {
   id: text("id").primaryKey(),
