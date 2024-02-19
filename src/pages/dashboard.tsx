@@ -24,7 +24,9 @@ export const dashboard = new Elysia()
     }
     return html(() => (
       <BaseHtml>
-        <h1>Dashboard - {journal.name} - {session.user.name}</h1>
+        <h1>
+          Dashboard - {journal.name} - {session.user.name}
+        </h1>
       </BaseHtml>
     ));
   });

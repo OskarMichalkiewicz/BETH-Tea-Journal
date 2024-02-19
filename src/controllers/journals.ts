@@ -84,7 +84,7 @@ export const journalsController = new Elysia({ prefix: "/journals" })
 
       if (!journal) {
         set.status = "Not Found";
-        return "Jouranl not found";
+        return "Not Found";
       }
 
       await db
@@ -107,8 +107,8 @@ export const journalsController = new Elysia({ prefix: "/journals" })
     {
       body: t.Object({
         journalCode: t.String({
-          minLength: 11,
-          maxLength: 11,
+          minLength: 10,
+          maxLength: 10,
         }),
       }),
     },
