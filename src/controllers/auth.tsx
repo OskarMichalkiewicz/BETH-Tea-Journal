@@ -5,7 +5,7 @@ import { parseCookie, serializeCookie } from "lucia/utils";
 import { googleAuth } from "../auth";
 import { config } from "../config";
 import { ctx } from "../context";
-import { redirect } from "../lib";
+import { redirect, syncIfLocal } from "../lib";
 
 class DuplicateEmailError extends Error {
   constructor() {
@@ -17,8 +17,7 @@ export const authController = new Elysia({
   prefix: "/auth",
 })
   .use(ctx)
-  .post("/signout", async (ctx) => {
-    console.log("got there");
+  .get("/signout", async (ctx) => {
     const authRequest = ctx.auth.handleRequest(ctx);
     const session = await authRequest.validate();
 
@@ -65,7 +64,7 @@ export const authController = new Elysia({
     const cookies = parseCookie(headers.cookie || "");
     const state_cookie = cookies.google_auth_state;
 
-    if (!state_cookie || !state || !state || state_cookie !== state || !code) {
+    if (!state_cookie || !state || state_cookie !== state || !code) {
       set.status = "Unauthorized";
       return;
     }
@@ -96,6 +95,9 @@ export const authController = new Elysia({
         attributes: {},
       });
       const sessionCookie = auth.createSessionCookie(session);
+
+      await syncIfLocal();
+
       set.headers["Set-Cookie"] = sessionCookie.serialize();
       redirect(
         {

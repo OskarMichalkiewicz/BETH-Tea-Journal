@@ -53,6 +53,7 @@ export const auth = lucia({
       picture: data.picture,
       email: data.email,
       id: data.id,
+      journal_id: data.journal_id,
     };
   },
 });
