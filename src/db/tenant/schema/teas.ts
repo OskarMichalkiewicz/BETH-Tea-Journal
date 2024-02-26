@@ -7,6 +7,4 @@ export const teas = sqliteTable("teas", {
     enum: ["Pu Ehr", "Heicha", "Yellow", "Black", "Green", "Matcha", "White"],
   }).notNull(),
   description: text("description").notNull(),
-  created_at: integer("created_at", { mode: "timestamp" }).notNull(),
-  updated_at: integer("updated_at", { mode: "timestamp" }).notNull(),
 });

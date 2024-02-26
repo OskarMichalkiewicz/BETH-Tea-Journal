@@ -29,7 +29,7 @@ export const BaseHtml = ({ children }: PropsWithChildren) => (
       <link rel="stylesheet" href="/public/dist/unocss.css" />
       <script>{safeScript}</script>
     </head>
-    <body hx-boost="true" hx-ext="loading-states">
+    <body className="bg-gray-900" hx-boost="true" hx-ext="loading-states">
       {children}
     </body>
   </html>

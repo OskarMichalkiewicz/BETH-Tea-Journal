@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { Elysia, t } from "elysia";
+import { config } from "../config";
 import { ctx } from "../context";
 import { journals, user } from "../db/primary/schema";
 import { pushToTenantDb } from "../db/tenant";
@@ -22,7 +23,7 @@ export const journalsController = new Elysia({ prefix: "/journals" })
         group: "tenants",
       });
       const { jwt } = await turso.logicalDatabases.mintAuthToken(
-        "oskarmichalkiewicz",
+        config.env.TURSO_JR_SLUG,
         dbName,
       );
       await pushToTenantDb({
@@ -59,7 +60,7 @@ export const journalsController = new Elysia({ prefix: "/journals" })
           set,
           headers,
         },
-        "/dashboard",
+        "/teas",
       );
     },
     {
@@ -101,7 +102,7 @@ export const journalsController = new Elysia({ prefix: "/journals" })
           set,
           headers,
         },
-        "/dashboard",
+        "/teas",
       );
     },
     {

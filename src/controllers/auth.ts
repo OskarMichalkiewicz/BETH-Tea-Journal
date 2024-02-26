@@ -1,6 +1,5 @@
 import { OAuthRequestError } from "@lucia-auth/oauth";
-import { Elysia, t } from "elysia";
-import { LuciaError } from "lucia";
+import { Elysia } from "elysia";
 import { parseCookie, serializeCookie } from "lucia/utils";
 import { googleAuth } from "../auth";
 import { config } from "../config";
@@ -99,6 +98,15 @@ export const authController = new Elysia({
       await syncIfLocal();
 
       set.headers["Set-Cookie"] = sessionCookie.serialize();
+      if (session.user.journal_id) {
+        redirect(
+          {
+            set,
+            headers,
+          },
+          "/teas",
+        );
+      }
       redirect(
         {
           set,

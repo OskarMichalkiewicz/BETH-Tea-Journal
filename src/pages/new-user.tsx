@@ -22,7 +22,7 @@ export const newUser = new Elysia()
         where: (journals, { eq }) => eq(journals.id, journalId),
       });
       if (journal) {
-        redirect({ set, headers }, "/dashboard");
+        redirect({ set, headers }, "/teas");
       }
     }
     return html(() => (
