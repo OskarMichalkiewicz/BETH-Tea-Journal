@@ -6,8 +6,8 @@ import { ctx } from "../../../context";
 export const newRoute = new Elysia().use(ctx).get(
   "/:journalId/teas/new",
   async ({ db, html, params }) => {
-    const journal = await db.query.journals.findFirst({
-      where: (journals, { eq }) => eq(journals.id, params.journalId),
+    const journal = await db.query.journal.findFirst({
+      where: (journal, { eq }) => eq(journal.id, params.journalId),
     });
     if (!journal) {
       return html(() => (

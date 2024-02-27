@@ -6,12 +6,6 @@ import { config } from "../config";
 import { ctx } from "../context";
 import { redirect, syncIfLocal } from "../lib";
 
-class DuplicateEmailError extends Error {
-  constructor() {
-    super("Duplicate email");
-  }
-}
-
 export const authController = new Elysia({
   prefix: "/auth",
 })

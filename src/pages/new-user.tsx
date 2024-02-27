@@ -18,8 +18,8 @@ export const newUser = new Elysia()
     }
     const journalId = session.user.journal_id;
     if (journalId) {
-      const journal = await db.query.journals.findFirst({
-        where: (journals, { eq }) => eq(journals.id, journalId),
+      const journal = await db.query.journal.findFirst({
+        where: (journal, { eq }) => eq(journal.id, journalId),
       });
       if (journal) {
         redirect({ set, headers }, "/teas");

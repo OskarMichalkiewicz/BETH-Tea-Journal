@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { Elysia, t } from "elysia";
 import { config } from "../config";
 import { ctx } from "../context";
-import { journals, user } from "../db/primary/schema";
+import { journal_user, journal, user } from "../db/primary/schema";
 import { pushToTenantDb } from "../db/tenant";
 import { createDatabaseId, redirect, syncIfLocal } from "../lib";
 
@@ -31,14 +31,14 @@ export const journalsController = new Elysia({ prefix: "/journals" })
         authToken: jwt,
       });
       const [result] = await db
-        .insert(journals)
+        .insert(journal)
         .values({
           name: body.journalName,
           database_name: Name,
           database_auth_token: jwt,
         })
         .returning({
-          id: journals.id,
+          id: journal.id,
         });
 
       if (!result) {
@@ -46,12 +46,17 @@ export const journalsController = new Elysia({ prefix: "/journals" })
         return "Internal Server Error";
       }
 
-      await db
-        .update(user)
-        .set({
-          journal_id: result.id,
-        })
-        .where(eq(user.id, session.user.id));
+      await db.insert(journal_user).values({
+        user_id: session.user.id,
+        journal_id: result.id,
+      });
+
+      //      await db
+      //        .update(user)
+      //        .set({
+      //          journal_id: result.id,
+      //        })
+      //        .where(eq(user.id, session.user.id));
 
       await syncIfLocal();
 
@@ -74,13 +79,13 @@ export const journalsController = new Elysia({ prefix: "/journals" })
   )
   .post(
     "/join",
-    async ({ body: { journalCode }, session, set, headers, turso, db }) => {
+    async ({ body: { journalCode }, session, set, headers, db }) => {
       if (!session) {
         redirect({ set, headers }, "/login");
         return;
       }
-      const journal = await db.query.journals.findFirst({
-        where: (journals, { eq }) => eq(journals.database_name, journalCode),
+      const journal = await db.query.journal.findFirst({
+        where: (journal, { eq }) => eq(journal.database_name, journalCode),
       });
 
       if (!journal) {
@@ -89,11 +94,19 @@ export const journalsController = new Elysia({ prefix: "/journals" })
       }
 
       await db
-        .update(user)
-        .set({
+        .insert(journal_user)
+        .values({
+          user_id: +session.user.id,
           journal_id: journal.id,
         })
-        .where(eq(user.id, session.user.id));
+        .onConflictDoNothing();
+
+      //      await db
+      //        .update(user)
+      //        .set({
+      //          journal_id: journal.id,
+      //        })
+      //        .where(eq(user.id, session.user.id));
 
       await syncIfLocal();
 

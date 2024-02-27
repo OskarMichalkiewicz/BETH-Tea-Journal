@@ -21,8 +21,8 @@ export const TeasController = new Elysia({ prefix: "/teas" })
         return;
       }
 
-      const journal = await db.query.journals.findFirst({
-        where: (journals, { eq }) => eq(journals.id, journalId),
+      const journal = await db.query.journal.findFirst({
+        where: (journal, { eq }) => eq(journal.id, journalId),
       });
 
       if (!journal) {
@@ -83,8 +83,8 @@ export const TeasController = new Elysia({ prefix: "/teas" })
         redirect({ set, headers }, "/login");
       }
 
-      const journal = await db.query.journals.findFirst({
-        where: (journals, { eq }) => eq(journals.id, journalId),
+      const journal = await db.query.journal.findFirst({
+        where: (journal, { eq }) => eq(journal.id, journalId),
       });
 
       if (!journal) {
@@ -141,8 +141,8 @@ export const TeasController = new Elysia({ prefix: "/teas" })
         redirect({ set, headers }, "/login");
       }
 
-      const journal = await db.query.journals.findFirst({
-        where: (journals, { eq }) => eq(journals.id, journalId),
+      const journal = await db.query.journal.findFirst({
+        where: (journal, { eq }) => eq(journal.id, journalId),
       });
 
       if (!journal) {

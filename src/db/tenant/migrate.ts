@@ -1,7 +1,7 @@
 import { pushToTenantDb } from ".";
 import { db } from "../primary";
 
-const journals = await db.query.journals.findMany();
+const journals = await db.query.journal.findMany();
 
 journals.forEach(async (journal) => {
   await pushToTenantDb({

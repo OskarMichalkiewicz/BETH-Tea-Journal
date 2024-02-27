@@ -8,8 +8,8 @@ import { redirect } from "../../../lib";
 export const id = new Elysia().use(ctx).get(
   "/:journalId/teas/:teaId",
   async ({ db, session, set, headers, html, params }) => {
-    const journal = await db.query.journals.findFirst({
-      where: (journals, { eq }) => eq(journals.id, params.journalId),
+    const journal = await db.query.journal.findFirst({
+      where: (journal, { eq }) => eq(journal.id, params.journalId),
     });
 
     if (!journal) {
