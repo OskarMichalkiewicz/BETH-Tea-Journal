@@ -30,7 +30,7 @@ export const newRoute = new Elysia().use(ctx).get(
           hx-target-5xx="#errorMessage"
           hx-swap="innerHTML"
         >
-          <label for="name" class="block  font-medium text-white">
+          <label for="name" class="block  font-medium text-gray-100">
             Name
           </label>
           <input
@@ -42,7 +42,7 @@ export const newRoute = new Elysia().use(ctx).get(
             maxlength="40"
             class="m-0 mb-3 w-full border-b bg-transparent pb-2 pl-2 focus:border-indigo-400 focus:outline-none"
           />
-          <label for="kind" class="block font-medium text-white">
+          <label for="kind" class="block font-medium text-gray-100">
             Kind
           </label>
           <input
@@ -54,7 +54,7 @@ export const newRoute = new Elysia().use(ctx).get(
             maxlength="40"
             class="mb-3 w-full border-b bg-transparent pb-2 pl-2 focus:border-indigo-400 focus:outline-none"
           />
-          <label for="description" class="block font-medium text-white">
+          <label for="description" class="block font-medium text-gray-100">
             Description
           </label>
           <textarea
@@ -71,7 +71,7 @@ export const newRoute = new Elysia().use(ctx).get(
           <button
             type="submit"
             data-loading-disable
-            class="flex w-full items-center justify-center border p-2 text-white hover:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400"
+            class="flex w-full items-center justify-center border p-2 text-gray-100 hover:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400"
             _="trigger closeModal"
           >
             Submit Ticket

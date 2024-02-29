@@ -55,6 +55,7 @@
     "@paralleldrive/cuid2": "^2.2.2",
     "@t3-oss/env-core": "^0.6.1",
     "@tlscipher/holt": "1.1.0",
+    "@types/html": "^1.0.4",
     "@unocss/reset": "^0.58.5",
     "beth-stack": "0.0.33",
     "drizzle-orm": "latest",

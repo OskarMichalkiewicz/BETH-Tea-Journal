@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { Elysia, t } from "elysia";
 import { config } from "../config";
 import { ctx } from "../context";
-import { journal_user, journal, user } from "../db/primary/schema";
+import { journal, journal_user, user } from "../db/primary/schema";
 import { pushToTenantDb } from "../db/tenant";
 import { createDatabaseId, redirect, syncIfLocal } from "../lib";
 
@@ -16,20 +16,24 @@ export const journalsController = new Elysia({ prefix: "/journals" })
         return;
       }
       const dbName = `jr-${createDatabaseId()}`;
+      console.log("before db create");
       const {
         database: { Name },
       } = await turso.databases.create({
         name: dbName,
         group: "tenants",
       });
+      console.log("after db create");
       const { jwt } = await turso.logicalDatabases.mintAuthToken(
         config.env.TURSO_JR_SLUG,
         dbName,
       );
+    console.log('after minting')
       await pushToTenantDb({
         dbName: Name,
         authToken: jwt,
       });
+    console.log('after push to tenant')
       const [result] = await db
         .insert(journal)
         .values({
@@ -40,23 +44,26 @@ export const journalsController = new Elysia({ prefix: "/journals" })
         .returning({
           id: journal.id,
         });
+      console.log("after db push");
 
       if (!result) {
         set.status = "Internal Server Error";
         return "Internal Server Error";
       }
 
-      await db.insert(journal_user).values({
-        user_id: session.user.id,
-        journal_id: result.id,
-      });
-
-      //      await db
-      //        .update(user)
-      //        .set({
-      //          journal_id: result.id,
-      //        })
-      //        .where(eq(user.id, session.user.id));
+      await db.batch([
+        db.insert(journal_user).values({
+          user_id: session.user.id,
+          journal_id: result.id,
+          admin: true,
+        }),
+        db
+          .update(user)
+          .set({
+            journal_id: result.id,
+          })
+          .where(eq(user.id, session.user.id)),
+      ]);
 
       await syncIfLocal();
 
@@ -80,6 +87,7 @@ export const journalsController = new Elysia({ prefix: "/journals" })
   .post(
     "/join",
     async ({ body: { journalCode }, session, set, headers, db }) => {
+      console.log(journalCode);
       if (!session) {
         redirect({ set, headers }, "/login");
         return;
@@ -93,20 +101,22 @@ export const journalsController = new Elysia({ prefix: "/journals" })
         return "Not Found";
       }
 
-      await db
-        .insert(journal_user)
-        .values({
-          user_id: +session.user.id,
-          journal_id: journal.id,
-        })
-        .onConflictDoNothing();
+      await db.batch([
+        db
+          .insert(journal_user)
+          .values({
+            user_id: session.user.id,
+            journal_id: journal.id,
+          })
+          .onConflictDoNothing(),
 
-      //      await db
-      //        .update(user)
-      //        .set({
-      //          journal_id: journal.id,
-      //        })
-      //        .where(eq(user.id, session.user.id));
+        db
+          .update(user)
+          .set({
+            journal_id: journal.id,
+          })
+          .where(eq(user.id, session.user.id)),
+      ]);
 
       await syncIfLocal();
 

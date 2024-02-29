@@ -1,4 +1,10 @@
-import { defineConfig, presetIcons, presetWebFonts, presetWind, presetUno } from "unocss";
+import {
+  defineConfig,
+  presetIcons,
+  presetUno,
+  presetWebFonts,
+  presetWind,
+} from "unocss";
 
 export default defineConfig({
   cli: {

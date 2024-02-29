@@ -8,6 +8,7 @@ export const journal = sqliteTable("journal", {
   name: text("name").notNull(),
   database_name: text("database_name").notNull(),
   database_auth_token: text("database_auth_token").notNull(),
+  public: integer("public", { mode: "boolean" }).notNull().default(false),
   created_at: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),

@@ -41,13 +41,13 @@ export const teas = new Elysia()
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
               {teaCollection.map((tea) => (
                 <div class=" relative flex aspect-[6/11] w-11/12 flex-col items-center rounded-full border border-gray-600 bg-gray-700 pt-2">
-                  <div class="flex aspect-square w-11/12 items-center justify-center rounded-full bg-gray-800 text-white">
+                  <div class="flex aspect-square w-11/12 items-center justify-center rounded-full bg-gray-800 text-gray-100">
                     Picture
                   </div>
                   <div class="flex w-full flex-col items-start px-[5%]">
-                    <p class="text-3xl text-white">{tea.name}</p>
-                    <p class="my-2 text-sm text-white">{tea.description}</p>
-                    <p class="text-xl text-white">{tea.kind}</p>
+                    <p class="text-3xl text-gray-100">{tea.name}</p>
+                    <p class="my-2 text-sm text-gray-100">{tea.description}</p>
+                    <p class="text-xl text-gray-100">{tea.kind}</p>
                   </div>
                   <a
                     href={`/${journalId}/tea/${tea.id}`}

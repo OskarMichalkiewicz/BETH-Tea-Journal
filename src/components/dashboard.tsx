@@ -2,7 +2,7 @@ import { type PropsWithChildren } from "beth-stack/jsx";
 
 export const Dashboard = ({ children }: PropsWithChildren) => (
   <div class="flex h-screen w-full flex-col md:flex-row">
-    <nav class="flex h-full min-w-[18rem] flex-col border-r border-gray-700 bg-gray-800 p-5 text-white lg:w-64">
+    <nav class="flex h-full min-w-[18rem] flex-col border-r border-gray-700 bg-gray-800 p-5 text-gray-100 lg:w-64">
       <h1 class="mb-4 text-4xl">Your Journal</h1>
       <ul class="flex-grow space-y-6">
         <DashboardItem text="Teas" icon="i-lucide-leaf" href="/teas" />

@@ -1,7 +1,6 @@
 import { liveReloadScript } from "beth-stack/dev";
 import { type PropsWithChildren } from "beth-stack/jsx";
 import { config } from "../config";
-import "@unocss/reset/tailwind.css";
 
 const safeScript =
   config.env.NODE_ENV === "development" ? liveReloadScript() : "";
@@ -23,6 +22,10 @@ export const BaseHtml = ({ children }: PropsWithChildren) => (
           }
         `}
       </style>
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css"
+      />
       <link rel="stylesheet" href="/public/dist/unocss.css" />
       <script>{safeScript}</script>
     </head>

@@ -1,3 +1,4 @@
+import { unlinkSync } from "fs";
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import { config } from "../../config";
@@ -18,6 +19,7 @@ export function getTenantDb({
   });
 
   const tenantDb = drizzle(tenantClient, { schema, logger: true });
+
   return {
     tenantClient,
     tenantDb,
@@ -33,26 +35,29 @@ export async function pushToTenantDb({
   authToken: string;
   input?: boolean;
 }) {
-  const tempConfingPath = "./src/db/tenant/drizzle.config.ts";
+  const tempConfigPath = "./src/db/tenant/drizzle.config.ts";
+
   const configText = `
-    export default {
-      schema: "./src/db/tenant/schema/index.ts",
-      driver: "turso",
-      dbCredentials: {
-        url: "libsql://${dbName}--${config.env.TURSO_JR_SLUG}.turso.io",
-        authToken: "${authToken}",
-      },
-      tablesFilter: ["!libsql_wasm_func_table"],
-    }`;
-  await Bun.write(tempConfingPath, configText);
+  export default {
+    schema: "./src/db/tenant/schema/index.ts",
+    driver: "turso",
+    dbCredentials: {
+      url: "libsql://${dbName}-${config.env.TURSO_JR_SLUG}.turso.io",
+      authToken: "${authToken}",
+    },
+    tablesFilter: ["!libsql_wasm_func_table"],
+  }`;
+
+  await Bun.write(tempConfigPath, configText);
 
   return new Promise((resolve, reject) => {
     const proc = Bun.spawn(
-      ["bunx", "drizzle-kit", "push:sqlite", `--config=${tempConfingPath}`],
+      ["bunx", "drizzle-kit", "push:sqlite", `--config=${tempConfigPath}`],
       {
         stdout: input ? "inherit" : undefined,
         stdin: input ? "inherit" : undefined,
         onExit(subprocess, exitCode, signalCode, error) {
+          unlinkSync(tempConfigPath);
           if (exitCode === 0) {
             resolve(void 0);
           } else {

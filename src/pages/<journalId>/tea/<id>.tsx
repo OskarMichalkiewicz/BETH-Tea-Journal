@@ -55,7 +55,7 @@ export const id = new Elysia().use(ctx).get(
     return html(() => (
       <BaseHtml>
         <Dashboard>
-          <div class="text-white">
+          <div class="text-gray-100">
             <div>{tea.name}</div>
             <div>{tea.kind}</div>
             <div>{tea.description}</div>
