@@ -17,7 +17,7 @@ export const TeasController = new Elysia({ prefix: "/teas" })
       db,
     }) => {
       if (!session) {
-        redirect({ set, headers }, "/login");
+        redirect({ set, headers }, "/");
         return;
       }
 
@@ -44,8 +44,6 @@ export const TeasController = new Elysia({ prefix: "/teas" })
         set.status = "Internal Server Error";
         return;
       }
-
-      redirect({ set, headers }, `${journalId}/teas/${tea.id}`);
     },
     {
       body: t.Object({
@@ -80,7 +78,7 @@ export const TeasController = new Elysia({ prefix: "/teas" })
       db,
     }) => {
       if (!session) {
-        redirect({ set, headers }, "/login");
+        redirect({ set, headers }, "/");
       }
 
       const journal = await db.query.journal.findFirst({
@@ -107,8 +105,6 @@ export const TeasController = new Elysia({ prefix: "/teas" })
         set.status = "Internal Server Error";
         return;
       }
-
-      redirect({ set, headers }, `${journalId}/teas/${tea.id}`);
     },
     {
       body: t.Object({
@@ -136,9 +132,9 @@ export const TeasController = new Elysia({ prefix: "/teas" })
   )
   .delete(
     "/:journalId/:id",
-    async ({ params: { journalId, id }, session, set, headers, db }) => {
+    async ({ params: { journalId, id }, session, set, headers, db, html }) => {
       if (!session) {
-        redirect({ set, headers }, "/login");
+        redirect({ set, headers }, "/");
       }
 
       const journal = await db.query.journal.findFirst({
@@ -165,7 +161,7 @@ export const TeasController = new Elysia({ prefix: "/teas" })
         return;
       }
 
-      redirect({ set, headers }, `/teas`);
+      
     },
     {
       params: t.Object({

@@ -12,28 +12,24 @@ export const journalsController = new Elysia({ prefix: "/journals" })
     "/",
     async ({ body, session, set, headers, turso, db }) => {
       if (!session) {
-        redirect({ set, headers }, "/login");
+        redirect({ set, headers }, "/");
         return;
       }
       const dbName = `jr-${createDatabaseId()}`;
-      console.log("before db create");
       const {
         database: { Name },
       } = await turso.databases.create({
         name: dbName,
         group: "tenants",
       });
-      console.log("after db create");
       const { jwt } = await turso.logicalDatabases.mintAuthToken(
         config.env.TURSO_JR_SLUG,
         dbName,
       );
-    console.log('after minting')
       await pushToTenantDb({
         dbName: Name,
         authToken: jwt,
       });
-    console.log('after push to tenant')
       const [result] = await db
         .insert(journal)
         .values({
@@ -44,7 +40,6 @@ export const journalsController = new Elysia({ prefix: "/journals" })
         .returning({
           id: journal.id,
         });
-      console.log("after db push");
 
       if (!result) {
         set.status = "Internal Server Error";
@@ -87,9 +82,8 @@ export const journalsController = new Elysia({ prefix: "/journals" })
   .post(
     "/join",
     async ({ body: { journalCode }, session, set, headers, db }) => {
-      console.log(journalCode);
       if (!session) {
-        redirect({ set, headers }, "/login");
+        redirect({ set, headers }, "/");
         return;
       }
       const journal = await db.query.journal.findFirst({

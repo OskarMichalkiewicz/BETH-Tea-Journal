@@ -4,29 +4,29 @@ type RoutesByType<
 > = RouterPattern<
   RemoveSlash<
     string &
-      keyof {
-        // Constrain to strings here
-        [key in keyof Schema as Schema[key] extends { [key in Type]: unknown }
-          ? key
-          : never]: true;
-      }
+    keyof {
+      // Constrain to strings here
+      [key in keyof Schema as Schema[key] extends { [key in Type]: unknown }
+      ? key
+      : never]: true;
+    }
   >
 >;
 
 type RemoveSlash<S extends string> = S extends `${infer T}/`
   ? T extends ""
-    ? S
-    : T
+  ? S
+  : T
   : S;
 
 type RouterPattern<T extends string> =
   T extends `${infer Start}:${infer Param}/${infer Rest}`
-    ? `${Start}${string}/${RouterPattern<Rest>}`
-    : T extends `${infer Start}:${infer Param}`
-    ? `${Start}${string}`
-    : T extends `${infer Start}*`
-    ? `${Start}${string}`
-    : T;
+  ? `${Start}${string}/${RouterPattern<Rest>}`
+  : T extends `${infer Start}:${infer Param}`
+  ? `${Start}${string}`
+  : T extends `${infer Start}*`
+  ? `${Start}${string}`
+  : T;
 
 type StartsWithApi<T extends string> = T extends `${"/api"}${infer Rest}`
   ? T
@@ -46,7 +46,7 @@ type PatchRoutes = RoutesByType<Schema, "patch">;
 
 declare namespace JSX {
   interface HtmlTag extends Htmx.Attributes {
-    ["hx-get"]?: StartsWithApi<GetRoutes>;
+    ["hx-get"]?: GetRoutes;
     ["hx-post"]?: StartsWithApi<PostRoutes>;
     ["hx-put"]?: StartsWithApi<PutRoutes>;
     ["hx-delete"]?: StartsWithApi<DeleteRoutes>;

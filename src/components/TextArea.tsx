@@ -1,19 +1,18 @@
-export function TextInput({
+export function TextArea({
   primary,
   secondary,
   label,
   id,
   ...rest
-}: JSX.HtmlInputTag & {
+}: JSX.HtmlTextAreaTag & {
   primary?: boolean;
   secondary?: boolean;
   label: string;
 }) {
   return (
     <div class="relative">
-      <input
+      <textarea
         class="peer w-full  border-b border-slate-100 bg-transparent py-1 text-slate-100 outline outline-0 autofill:transition-colors autofill:duration-[5000000ms] focus:outline-0"
-        type="text"
         placeholder=" "
         {...rest}
       />

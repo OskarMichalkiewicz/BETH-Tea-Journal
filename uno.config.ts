@@ -5,13 +5,20 @@ import {
   presetWebFonts,
   presetWind,
 } from "unocss";
+import presetAutoprefixer from "unocss-preset-autoprefixer";
 
 export default defineConfig({
   cli: {
     entry: {
-      patterns: ["src/**/*.{ts,tsx}"],
+      patterns: ["**/*.{ts,tsx,html}"],
       outFile: "public/dist/unocss.css",
     },
   },
-  presets: [presetUno(), presetWind(), presetIcons(), presetWebFonts()],
+  presets: [
+    presetUno(),
+    presetWind(),
+    presetIcons(),
+    presetWebFonts(),
+    presetAutoprefixer(),
+  ],
 });

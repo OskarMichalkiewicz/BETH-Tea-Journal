@@ -12,7 +12,7 @@ export const Modal = ({
     aria-modal="true"
     _="on closeModal transition my opacity to 0 over 0.2s then remove me"
   >
-    <div class="overflow-hidden rounded-xl border border-gray-700 bg-gray-800 p-4 text-neutral-100 shadow-lg">
+    <div class="overflow-hidden rounded-xl border border-slate-700 bg-slate-800 p-4 text-neutral-100 shadow-lg">
       <div class="flex items-baseline justify-between">
         <h1 safe class="text-3xl font-semibold">
           {title}

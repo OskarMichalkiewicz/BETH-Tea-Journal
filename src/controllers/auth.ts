@@ -106,7 +106,7 @@ export const authController = new Elysia({
           set,
           headers,
         },
-        "/new-user",
+        "/",
       );
     } catch (e) {
       log.error(e, "Error signing in with Google");
