@@ -48,6 +48,7 @@
   "dependencies": {
     "@bogeychan/elysia-logger": "0.0.9",
     "@elysiajs/cron": "^0.6.0",
+    "@elysiajs/html": "^0.8.0",
     "@elysiajs/static": "^0.6.0",
     "@elysiajs/swagger": "^0.6.2",
     "@iconify-json/logos": "^1.1.37",

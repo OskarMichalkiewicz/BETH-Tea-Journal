@@ -4,6 +4,7 @@ import { Modal } from "../../../components/modal";
 import { TextArea } from "../../../components/TextArea";
 import { TextInput } from "../../../components/TextInput";
 import { ctx } from "../../../context";
+import { teaTypesArray } from "../../../types/contants";
 
 export const newRoute = new Elysia().use(ctx).get(
   "/:journalId/teas/new",
@@ -28,6 +29,7 @@ export const newRoute = new Elysia().use(ctx).get(
           hx-target-4xx="#errorMessage"
           hx-target-5xx="#errorMessage"
           hx-swap="innerHTML"
+          _="on submit trigger closeModal"
         >
           <TextInput
             label="Name"
@@ -38,19 +40,19 @@ export const newRoute = new Elysia().use(ctx).get(
             minlength="3"
             maxlength="40"
           />
-          <label for="kind" class="block font-medium text-gray-100">
+          <label for="kind" class="sr-only">
             Kind
           </label>
-          <input
-            type="dropdown"
-            name="kind"
+          <select
             id="kind"
-            placeholder="Enter a name for your tea"
+            name="kind"
             required="true"
-            minlength="3"
-            maxlength="40"
             class="mb-3 w-full border-b bg-transparent pb-2 pl-2 focus:border-indigo-400 focus:outline-none"
-          />
+          >
+            {teaTypesArray.map((type) => {
+              return <option value={type}>{type}</option>;
+            })}
+          </select>
           <TextArea
             label="Description"
             name="description"
@@ -68,7 +70,6 @@ export const newRoute = new Elysia().use(ctx).get(
             text="Add"
             type="submit"
             data-loading-disable
-            _="on submit trigger closeModal"
           />
           <div class=" text-red-400" id="errorMessage" />
         </form>

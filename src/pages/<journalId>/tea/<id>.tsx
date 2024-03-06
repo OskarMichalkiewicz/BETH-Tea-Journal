@@ -47,9 +47,6 @@ export const id = new Elysia().use(ctx).get(
         </div>
         <button
           hx-delete={`/api/teas/${journal.id}/${tea.id}`}
-          hx-get={`/teas`}
-          hx-swap="innerHTML"
-          hx-targer="#content"
           hx-trigger="click"
           class="absolute bottom-5 left-1/2 -translate-x-2/4 rounded-full bg-red-700 hover:bg-red-600 hover:text-slate-200"
         >

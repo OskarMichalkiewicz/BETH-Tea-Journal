@@ -4,6 +4,7 @@ import { ctx } from "../context";
 import { getTenantDb } from "../db/tenant";
 import { teas } from "../db/tenant/schema";
 import { redirect } from "../lib";
+import { teaTypes } from "../types/contants";
 
 export const TeasController = new Elysia({ prefix: "/teas" })
   .use(ctx)
@@ -15,6 +16,7 @@ export const TeasController = new Elysia({ prefix: "/teas" })
       set,
       headers,
       db,
+      html,
     }) => {
       if (!session) {
         redirect({ set, headers }, "/");
@@ -44,6 +46,14 @@ export const TeasController = new Elysia({ prefix: "/teas" })
         set.status = "Internal Server Error";
         return;
       }
+      return html(() => (
+        <div
+          hx-get="/teas"
+          hx-target="#content"
+          hx-swap="innerHTML"
+          hx-trigger="load"
+        />
+      ));
     },
     {
       body: t.Object({
@@ -51,15 +61,7 @@ export const TeasController = new Elysia({ prefix: "/teas" })
           minLength: 5,
           maxLength: 20,
         }),
-        kind: t.Enum({
-          ["Pu Ehr"]: "Pu Ehr",
-          Heicha: "Heicha",
-          Yellow: "Yellow",
-          Black: "Black",
-          Green: "Green",
-          Matcha: "Matcha",
-          White: "White",
-        }),
+        kind: t.Enum(teaTypes),
         description: t.String({
           minLength: 5,
           maxLength: 255,
@@ -161,7 +163,14 @@ export const TeasController = new Elysia({ prefix: "/teas" })
         return;
       }
 
-      
+      return html(() => (
+        <div
+          hx-get="/teas"
+          hx-swap="innerHTML"
+          hx-target="#content"
+          hx-trigger="load"
+        />
+      ));
     },
     {
       params: t.Object({

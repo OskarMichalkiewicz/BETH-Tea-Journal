@@ -39,23 +39,19 @@ export const ctx = new Elysia({
   .use(bethStack())
   .use(logger(loggerConfig))
   .use(
-    // @ts-expect-error
+    // @ts-expect-error silence error
     config.env.NODE_ENV === "development"
       ? new HoltLogger().getLogger()
       : (a) => a,
   )
   .use(
-    // @ts-expect-error
+    // @ts-expect-error silence error
     config.env.DATABASE_CONNECTION_TYPE === "local-replica"
       ? cron({
           name: "heartbeat",
           pattern: "*/2 * * * * *",
           run() {
-            const now = performance.now();
-            // console.log("Syncing database...");
-            void client.sync().then(() => {
-              //console.log(`Database synced in ${performance.now() - now}ms`);
-            });
+            void client.sync();
           },
         })
       : (a) => a,

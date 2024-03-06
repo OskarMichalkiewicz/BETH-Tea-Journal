@@ -5,12 +5,7 @@ import { api } from "./controllers/*";
 import { pages } from "./pages/*";
 
 const app = new Elysia()
-  .use(
-    staticPlugin({
-      prefix: "/",
-      alwaysStatic: true,
-    }),
-  )
+  .use(staticPlugin({ assets: "public", prefix: "" }))
   .use(api)
   .use(pages)
   .onStart(() => {
@@ -22,8 +17,7 @@ const app = new Elysia()
   .onError(({ error }) => {
     console.error(error);
   })
-  .listen(3000)
-  .get("/", () => Bun.file("./public/index.html"));
+  .listen(3000);
 
 export type App = typeof app;
 
