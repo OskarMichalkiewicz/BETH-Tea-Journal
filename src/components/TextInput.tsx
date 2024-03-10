@@ -3,6 +3,7 @@ export function TextInput({
   secondary,
   label,
   id,
+  class: classes,
   ...rest
 }: JSX.HtmlInputTag & {
   primary?: boolean;
@@ -10,7 +11,7 @@ export function TextInput({
   label: string;
 }) {
   return (
-    <div class="relative">
+    <div class={`relative ${classes}`}>
       <input
         class="peer w-full border-b border-slate-100 bg-transparent py-1 text-slate-100 outline outline-0 autofill:transition-colors autofill:duration-[5000000ms] focus:outline-0"
         type="text"

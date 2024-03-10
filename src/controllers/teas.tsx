@@ -11,7 +11,7 @@ export const TeasController = new Elysia({ prefix: "/teas" })
   .post(
     "/",
     async ({
-      body: { journalId, description, kind, name },
+      body: { description, kind, name },
       session,
       set,
       headers,
@@ -19,6 +19,11 @@ export const TeasController = new Elysia({ prefix: "/teas" })
       html,
     }) => {
       if (!session) {
+        redirect({ set, headers }, "/");
+        return;
+      }
+      const journalId = session.user.journal_id;
+      if (!journalId) {
         redirect({ set, headers }, "/");
         return;
       }
@@ -73,7 +78,7 @@ export const TeasController = new Elysia({ prefix: "/teas" })
   .post(
     "/edit",
     async ({
-      body: { journalId, teaId, name, description, kind },
+      body: { teaId, name, description, kind },
       session,
       set,
       headers,
@@ -81,6 +86,13 @@ export const TeasController = new Elysia({ prefix: "/teas" })
     }) => {
       if (!session) {
         redirect({ set, headers }, "/");
+        return;
+      }
+
+      const journalId = session.user.journal_id;
+      if (!journalId) {
+        redirect({ set, headers }, "/");
+        return;
       }
 
       const journal = await db.query.journal.findFirst({
@@ -133,10 +145,16 @@ export const TeasController = new Elysia({ prefix: "/teas" })
     },
   )
   .delete(
-    "/:journalId/:id",
-    async ({ params: { journalId, id }, session, set, headers, db, html }) => {
+    "/:id",
+    async ({ params: { id }, session, set, headers, db, html }) => {
       if (!session) {
         redirect({ set, headers }, "/");
+        return;
+      }
+      const journalId = session?.user.journal_id;
+      if (!journalId) {
+        redirect({ set, headers }, "/");
+        return;
       }
 
       const journal = await db.query.journal.findFirst({
@@ -174,7 +192,6 @@ export const TeasController = new Elysia({ prefix: "/teas" })
     },
     {
       params: t.Object({
-        journalId: t.Numeric(),
         id: t.Numeric(),
       }),
     },

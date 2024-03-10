@@ -36,7 +36,7 @@ export const Sidebar = ({
     </aside>
     <div class="relative w-full">
       <div id="modals"></div>
-      <div id="content" class="min-h-screen p-6">
+      <div id="content" class="min-h-screen">
         {children}
       </div>
     </div>
